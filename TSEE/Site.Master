@@ -1,0 +1,26 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="TSEE.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <title>ScanX - AI PDF Note-Taking</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <form runat="server">
+        <nav class="navbar">
+            <div class="logo">ScanX</div>
+            <ul class="nav-links">
+                <li><a href="features.aspx">Features</a></li>
+                <li><a href="solution.aspx">Solution</a></li>
+                <li><a href="pricing.aspx">Pricing</a></li>
+                <li><a href="about.aspx">About</a></li>
+            </ul>
+        </nav>
+        <div class="content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>
+    </form>
+</body>
+</html>
