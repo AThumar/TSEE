@@ -1,24 +1,35 @@
 ﻿using System;
-using System.Xml.Linq;
-namespace TSEE
+using System.Data.SqlClient;
+using System.Web.UI;
 
+namespace TSEE
 {
-    public partial class Signup : System.Web.UI.Page
+    public partial class Signup : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Optional: Add logic for Google OAuth later
         }
 
         protected void btnSignup_Click(object sender, EventArgs e)
         {
-            string name = txtName.Text;
             string email = txtEmail.Text;
-            string password = txtPassword.Text;
+            string password = txtPassword.Text;  // Store securely in a real app
 
-            // TODO: Add database logic to store user details
+            string connString = @"Server=(localdb)\MSSQLLocalDB;Database=TSEE;Integrated Security=True;";
 
-            Response.Redirect("Dashboard.aspx"); // Redirect after signup
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                string query = "INSERT INTO Users (Email, Password) VALUES (@Email, @Password)";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Password", password);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            Response.Write("<script>alert('Signup Successful!');</script>");
         }
     }
 }

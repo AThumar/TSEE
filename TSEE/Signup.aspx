@@ -1,23 +1,23 @@
-﻿<%@ Page Title="Sign Up" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Signup.aspx.cs" Inherits="TSEE.Signup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Signup.aspx.cs" Inherits="TSEE.Signup" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="signup-container">
-        <h1 class="logo">ScanX</h1>
-        <h2>Create your account</h2>
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Signup</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <h2>Create an Account</h2>
 
-        <button class="google-btn">
-            <img src="google-icon.png" alt="Google" />
-            Log in with Google
-        </button>
+        <label>Email:</label>
+        <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox>
+        <br />
 
-        <div class="divider">or</div>
+        <label>Password:</label>
+        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"></asp:TextBox>
+        <br />
 
-        <asp:TextBox ID="txtName" runat="server" CssClass="input-field" Placeholder="Enter your name"></asp:TextBox>
-        <asp:TextBox ID="txtEmail" runat="server" CssClass="input-field" Placeholder="Enter your email"></asp:TextBox>
-        <asp:TextBox ID="txtPassword" runat="server" CssClass="input-field" Placeholder="Enter your password" TextMode="Password"></asp:TextBox>
-
-        <asp:Button ID="btnSignup" runat="server" Text="Continue" CssClass="btn primary" OnClick="btnSignup_Click" />
-
-        <p class="signin-text">Already have an account? <a href="Login.aspx">Sign in</a></p>
-    </div>
-</asp:Content>
+        <asp:Button ID="btnSignup" runat="server" Text="Sign Up" OnClick="btnSignup_Click" />
+    </form>
+</body>
+</html>
