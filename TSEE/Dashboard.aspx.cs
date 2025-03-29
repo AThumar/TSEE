@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -7,16 +9,30 @@ namespace TSEE
 {
     public partial class Dashboard : Page
     {
+        //protected void Page_Load(object sender, EventArgs e)
+        //{
+        //    // Ensure user is logged in
+        //    if (Session["UserEmail"] == null)
+        //    {
+        //        Response.Redirect("Login.aspx");
+        //    }
+
+        //    if (!IsPostBack)
+        //    {
+        //        LoadUploadedFiles();
+        //    }
+        //}
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UserEmail"] == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
-
             if (!IsPostBack)
             {
-                LoadUploadedFiles();
+                string uploadPath = Server.MapPath("~/Uploads/");
+                if (Directory.Exists(uploadPath))
+                {
+                    List<string> files = Directory.GetFiles(uploadPath, "*.*", SearchOption.AllDirectories).ToList();
+                    rptUploadedFiles.DataSource = files;
+                    rptUploadedFiles.DataBind();
+                }
             }
         }
 
@@ -24,22 +40,26 @@ namespace TSEE
         {
             if (fileUpload.HasFile)
             {
+                string userEmail = Session["UserEmail"].ToString();  // Get logged-in user email
+                string sanitizedEmail = userEmail.Replace("@", "_").Replace(".", "_"); // Safe folder name
+
+                string uploadDir = Server.MapPath($"~/Uploads/{sanitizedEmail}/"); // User-specific folder
+
+                // Ensure the Uploads directory exists
+                if (!Directory.Exists(uploadDir))
+                {
+                    Directory.CreateDirectory(uploadDir);
+                }
+
                 string fileName = txtFileName.Text.Trim();
                 string fileExtension = Path.GetExtension(fileUpload.FileName);
 
                 if (fileExtension.ToLower() == ".pdf")
                 {
-                    string uploadDir = Server.MapPath("~/Uploads/");
                     string savePath = Path.Combine(uploadDir, fileName + fileExtension);
+                    fileUpload.SaveAs(savePath);  // Save file
 
-                    // Ensure Uploads directory exists
-                    if (!Directory.Exists(uploadDir))
-                    {
-                        Directory.CreateDirectory(uploadDir);
-                    }
-
-                    fileUpload.SaveAs(savePath);
-                    LoadUploadedFiles(); // Refresh file list
+                    LoadUploadedFiles();  // Refresh file list
                     Response.Write("<script>alert('File uploaded successfully!');</script>");
                 }
                 else
@@ -53,22 +73,28 @@ namespace TSEE
             }
         }
 
+
         private void LoadUploadedFiles()
         {
             string uploadDir = Server.MapPath("~/Uploads/");
-            if (!Directory.Exists(uploadDir)) return;
+            List<string> fileList = new List<string>();
 
-            string[] files = Directory.GetFiles(uploadDir, "*.pdf");
-            var fileList = new System.Collections.Generic.List<string>();
-
-            foreach (string file in files)
+            foreach (string userFolder in Directory.GetDirectories(uploadDir))
             {
-                fileList.Add(Path.GetFileName(file));
+                string userEmail = Path.GetFileName(userFolder);
+                string[] files = Directory.GetFiles(userFolder, "*.pdf");
+
+                foreach (string file in files)
+                {
+                    string fileName = Path.GetFileName(file);
+                    fileList.Add(userEmail + "/" + fileName); // Store userEmail + fileName
+                }
             }
 
             rptUploadedFiles.DataSource = fileList;
             rptUploadedFiles.DataBind();
         }
+
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {

@@ -174,13 +174,18 @@
 
             <!-- Uploaded Files List -->
             <div class="file-list">
-                <asp:Repeater ID="rptUploadedFiles" runat="server">
-                    <ItemTemplate>
-                        <a href='<%# "Work.aspx?file=" + Server.UrlEncode(Container.DataItem.ToString()) %>'>
-                            📄 <%# Container.DataItem %>
-                        </a>
-                    </ItemTemplate>
-                </asp:Repeater>
+              <asp:Repeater ID="rptUploadedFiles" runat="server">
+    <ItemTemplate>
+       <a href='<%# "Work.aspx?user=" + Server.UrlEncode(System.IO.Path.GetDirectoryName(Container.DataItem.ToString())) + "&file=" + Server.UrlEncode(System.IO.Path.GetFileName(Container.DataItem.ToString())) %>'>
+    📄 <%# System.IO.Path.GetFileName(Container.DataItem.ToString()) %>
+</a>
+
+        <br />
+    </ItemTemplate>
+</asp:Repeater>
+
+
+
             </div>
         </div>
 
