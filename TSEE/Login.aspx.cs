@@ -1,48 +1,61 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Configuration;
 
 namespace TSEE
 {
-	public partial class Login : System.Web.UI.Page
-	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-
-		}
+    public partial class Login : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["UserEmail"] != null)
+            {
+                Response.Redirect("Dashboard.aspx", false);  // ✅ Prevents ThreadAbortException
+            }
+        }
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text.Trim();
 
-            string connString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TSEE;Integrated Security=True";
-
-            using (SqlConnection conn = new SqlConnection(connString))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                conn.Open();
-                string query = "SELECT COUNT(*) FROM Users WHERE Email = @Email AND Password = @Password";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@Password", password);
+                lblMessage.Text = "Email and Password cannot be empty!";
+                return;
+            }
 
-                    int count = (int)cmd.ExecuteScalar();
-                    if (count > 0)
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["TSEEConnectionString"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT COUNT(*) FROM Users WHERE Email=@Email AND Password=@Password";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        Response.Redirect("Dashboard.aspx");
-                    }
-                    else
-                    {
-                        Response.Write("<script>alert('Invalid email or password');</script>");
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        cmd.Parameters.AddWithValue("@Password", password);
+
+                        conn.Open();
+                        int count = (int)cmd.ExecuteScalar();
+                        conn.Close();
+
+                        if (count > 0)
+                        {
+                            Session["UserEmail"] = email;  // ✅ Store session
+                            Response.Redirect("Dashboard.aspx", false);  // ✅ Prevents thread abort issues
+                        }
+                        else
+                        {
+                            lblMessage.Text = "Invalid Email or Password!";
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                lblMessage.Text = "Error: " + ex.Message;
+            }
         }
-
     }
 }

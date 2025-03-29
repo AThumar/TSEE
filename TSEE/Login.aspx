@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -38,11 +38,15 @@
 <div class="container">
     <h3 class="text-center">ScanX</h3>
     <form runat="server">
+        
+        <!-- Error Message -->
+        <asp:Label ID="lblMessage" runat="server" ForeColor="Red" CssClass="d-block text-center mb-2"></asp:Label>
+
         <asp:TextBox ID="txtEmail" CssClass="form-control mb-3" runat="server" Placeholder="Email address"></asp:TextBox>
         <asp:TextBox ID="txtPassword" CssClass="form-control mb-3" runat="server" TextMode="Password" Placeholder="Password"></asp:TextBox>
         
         <asp:Button ID="btnLogin" CssClass="btn btn-primary w-100" runat="server" Text="Log in" OnClick="btnLogin_Click" />
-        
+
         <div class="text-center mt-2">
             <a href="ForgotPassword.aspx">Forgot your password?</a>
             <br />
