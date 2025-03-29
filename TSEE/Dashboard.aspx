@@ -53,7 +53,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             text-align: center;
         }
 
@@ -177,7 +176,7 @@
             <div class="file-list">
                 <asp:Repeater ID="rptUploadedFiles" runat="server">
                     <ItemTemplate>
-                        <a href='<%# "Uploads/" + Container.DataItem %>' target="_blank">
+                        <a href='<%# "Work.aspx?file=" + Server.UrlEncode(Container.DataItem.ToString()) %>'>
                             📄 <%# Container.DataItem %>
                         </a>
                     </ItemTemplate>
