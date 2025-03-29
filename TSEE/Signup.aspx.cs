@@ -2,34 +2,27 @@
 using System.Data.SqlClient;
 using System.Web.UI;
 
-namespace TSEE
+public partial class Signup : Page
 {
-    public partial class Signup : Page
+    protected void btnSignup_Click(object sender, EventArgs e)
     {
-        protected void Page_Load(object sender, EventArgs e)
+        string email = txtEmail.Text.Trim();
+        string password = txtPassword.Text.Trim();
+
+        string connString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=UserDB;Integrated Security=True";
+
+        using (SqlConnection conn = new SqlConnection(connString))
         {
-        }
-
-        protected void btnSignup_Click(object sender, EventArgs e)
-        {
-            string email = txtEmail.Text;
-            string password = txtPassword.Text;  // Store securely in a real app
-
-            string connString = @"Server=(localdb)\MSSQLLocalDB;Database=TSEE;Integrated Security=True;";
-
-            using (SqlConnection conn = new SqlConnection(connString))
+            string query = "INSERT INTO Users (Email, Password) VALUES (@Email, @Password)";
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                conn.Open();
-                string query = "INSERT INTO Users (Email, Password) VALUES (@Email, @Password)";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@Password", password);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Password", password);
 
-            Response.Write("<script>alert('Signup Successful!');</script>");
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
         }
     }
 }
