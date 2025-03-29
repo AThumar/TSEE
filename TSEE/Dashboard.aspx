@@ -31,19 +31,23 @@
         }
 
         .sidebar button, .logout-btn {
-            background: black;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            margin: 5px 0;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+    background: #007bff; /* Change to blue */
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+}
 
-        .sidebar button:hover, .logout-btn:hover {
-            background: #444;
-        }
+.sidebar button:hover, .logout-btn:hover {
+    background: #0056b3; /* Darker blue */
+}
+
 
         .upgrade-btn {
             background: transparent;
@@ -53,10 +57,15 @@
             cursor: pointer;
         }
 
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-        }
+       .content {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 
         /* Logout Button */
         .logout-container {
