@@ -31,23 +31,22 @@
         }
 
         .sidebar button, .logout-btn {
-    background: #007bff; /* Change to blue */
-    color: white;
-    border: none;
-    padding: 12px;
-    width: 100%;
-    margin: 5px 0;
-    cursor: pointer;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: 0.3s;
-}
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
 
-.sidebar button:hover, .logout-btn:hover {
-    background: #0056b3; /* Darker blue */
-}
-
+        .sidebar button:hover, .logout-btn:hover {
+            background: #0056b3;
+        }
 
         .upgrade-btn {
             background: transparent;
@@ -57,15 +56,15 @@
             cursor: pointer;
         }
 
-       .content {
-    flex-grow: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
         /* Logout Button */
         .logout-container {
@@ -78,7 +77,59 @@
             width: auto;
             padding: 8px 15px;
         }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+            text-align: center;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .button, .upload-btn, .close-btn {
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .close-btn {
+            background: #ccc;
+            color: black;
+        }
+
     </style>
+    <script>
+        function openModal() {
+            document.getElementById("uploadModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("uploadModal").style.display = "none";
+        }
+    </script>
 </head>
 <body>
 
@@ -86,11 +137,30 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <h2>ScanX</h2>
-            <asp:Button ID="btnUpload" runat="server" Text="+ Upload PDF" CssClass="button" OnClick="btnUpload_Click" />
+            <asp:Button ID="btnUpload" runat="server" Text="+ Upload PDF" CssClass="button" OnClientClick="openModal(); return false;" />
             <asp:Button ID="btnWorkshop" runat="server" Text="📂 Workshop" CssClass="button" />
             <asp:Button ID="btnUpgrade" runat="server" Text="🛡️ Upgrade" CssClass="upgrade-btn" />
             <p style="font-size: 12px; color: gray;">4 out of 5 PDFs Uploaded</p>
             <progress value="4" max="5"></progress>
+        </div>
+
+        <!-- Modal -->
+        <div id="uploadModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Upload Pdf File</h2>
+                <p>Select a file to Upload</p>
+
+                <asp:FileUpload ID="fileUpload" runat="server" />
+                <br /><br />
+
+                <label>File Name *</label>
+                <asp:TextBox ID="txtFileName" runat="server" CssClass="input-box" />
+
+                <br /><br />
+                <asp:Button ID="btnClose" runat="server" Text="Close" CssClass="close-btn" OnClientClick="closeModal(); return false;" />
+                <asp:Button ID="btnUploadFile" runat="server" Text="Upload" CssClass="upload-btn" OnClick="btnUploadFile_Click" />
+            </div>
         </div>
 
         <!-- Main Content -->
