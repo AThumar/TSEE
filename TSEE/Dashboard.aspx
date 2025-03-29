@@ -15,7 +15,6 @@
             height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 250px;
             background: #f8f8f8;
@@ -48,14 +47,6 @@
             background: #0056b3;
         }
 
-        .upgrade-btn {
-            background: transparent;
-            border: none;
-            color: gray;
-            text-align: left;
-            cursor: pointer;
-        }
-
         .content {
             flex-grow: 1;
             padding: 20px;
@@ -66,7 +57,24 @@
             text-align: center;
         }
 
-        /* Logout Button */
+        .file-list {
+            margin-top: 20px;
+            width: 60%;
+            text-align: left;
+        }
+
+        .file-list a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .file-list a:hover {
+            text-decoration: underline;
+        }
+
         .logout-container {
             position: absolute;
             top: 10px;
@@ -78,7 +86,6 @@
             padding: 8px 15px;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -139,9 +146,7 @@
             <h2>ScanX</h2>
             <asp:Button ID="btnUpload" runat="server" Text="+ Upload PDF" CssClass="button" OnClientClick="openModal(); return false;" />
             <asp:Button ID="btnWorkshop" runat="server" Text="📂 Workshop" CssClass="button" />
-            <asp:Button ID="btnUpgrade" runat="server" Text="🛡️ Upgrade" CssClass="upgrade-btn" />
-            <p style="font-size: 12px; color: gray;">4 out of 5 PDFs Uploaded</p>
-            <progress value="4" max="5"></progress>
+            <asp:Button ID="btnUpgrade" runat="server" Text="🛡️ Upgrade" CssClass="button" />
         </div>
 
         <!-- Modal -->
@@ -167,9 +172,20 @@
         <div class="content">
             <h1>Welcome to ScanX Dashboard</h1>
             <p>Your uploaded PDFs will appear here.</p>
+
+            <!-- Uploaded Files List -->
+            <div class="file-list">
+                <asp:Repeater ID="rptUploadedFiles" runat="server">
+                    <ItemTemplate>
+                        <a href='<%# "Uploads/" + Container.DataItem %>' target="_blank">
+                            📄 <%# Container.DataItem %>
+                        </a>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </div>
         </div>
 
-        <!-- Logout Button in Top-Right -->
+        <!-- Logout Button -->
         <div class="logout-container">
             <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="logout-btn" OnClick="btnLogout_Click" />
         </div>
