@@ -117,7 +117,7 @@
                 <h3 class="fw-bold">✨ Ready to Transform Your Workflow?</h3>
                 <p class="mb-4 text-muted">Join thousands of professionals using ScanX to work smarter, not harder.</p>
                 <asp:Button a href="Signup.aspx" ID="btnStartFree" runat="server" Text="Get Started for Free" CssClass="btn btn-dark px-4 me-2 mb-2" />
-                <asp:Button a href"pricing.aspx" ID="btnPricing" runat="server" Text="See Pricing Plans" CssClass="btn btn-outline-dark px-4 mb-2" />
+                <asp:Button  ID="btnPricing" runat="server" Text="See Pricing Plans" CssClass="btn btn-outline-dark px-4 mb-2" />
             </div>
         </div>
     </form>
